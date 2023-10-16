@@ -137,7 +137,7 @@ class Product extends REST_Controller
      *
      * @return Response
      */
-    public function index_put($id)
+    public function index_put($id = 0)
     {
         $headers = $this->input->request_headers();
         if (isset($headers['Authorization'])) {
