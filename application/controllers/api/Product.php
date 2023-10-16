@@ -53,36 +53,36 @@ class Product extends REST_Controller
                     if($data['status'] == false){
                         $this->response([
                             'message' => 'Data tidak ditemukan.',
-                        ], REST_Controller::HTTP_OK);
+                        ], 404);
                     }else{
                         $this->response([
                             'message' => "Sukses mengambil data",
                             'data' => $data
-                        ], REST_Controller::HTTP_OK);
+                        ], 200);
                     }
                 } else {
                     $data = $this->Product_model->show();
                     if($data['status'] == false){
                         $this->response([
                             'message' => 'Data tidak ditemukan.',
-                        ], REST_Controller::HTTP_OK);
+                        ], 404);
                     }else{
                         $this->response([
                             'message' => "Sukses mengambil data",
                             'data' => $data
-                        ], REST_Controller::HTTP_OK);
+                        ], 200);
                     }
                 }
                 // ------------- End -------------
             } else {
                 $this->response([
                     'message' => 'Authentikasi gagal.',
-                ], REST_Controller::HTTP_OK);
+                ], 400);
             }
         } else {
             $this->response([
                 'message' => 'Authentikasi gagal.',
-            ], REST_Controller::HTTP_OK);
+            ], 400);
         }
     }
 
@@ -103,32 +103,32 @@ class Product extends REST_Controller
                 if(!isset($input['product_name']) || !isset($input['category_id'])){
                     $this->response([
                         'message' => 'Data tidak lengkap.',
-                    ], REST_Controller::HTTP_OK);
+                    ], 400);
                 }else{
                     $product_id = $this->Product_model->insert($input);
                     if($product_id['status'] == false){
                         $this->response([
                             'message' => $product_id['message'],
-                        ], REST_Controller::HTTP_OK);
+                        ], 400);
                     }else{
                         $data = $this->Product_model->show($product_id['id']);
         
                         $this->response([
                             'message' => 'Sukses menambah data.',
                             'data' => $data
-                        ], REST_Controller::HTTP_OK);
+                        ], 200);
                     }
                 }
                 // ------------- End -------------
             } else {
                 $this->response([
                     'message' => 'Authentikasi gagal.',
-                ], REST_Controller::HTTP_OK);
+                ], 400);
             }
         } else {
             $this->response([
                 'message' => 'Authentikasi gagal.',
-            ], REST_Controller::HTTP_OK);
+            ], 400);
         }
     }
 
@@ -158,18 +158,18 @@ class Product extends REST_Controller
                     $this->response([
                         'message' => $response['message'],
                         'data' => $data
-                    ], REST_Controller::HTTP_OK);
+                    ], 200);
                 }else{
                     $this->response([
                         'message' => $response['message'],
-                    ], REST_Controller::HTTP_OK);
+                    ],400);
                 }
                 // ------------- End -------------
             } else {
                 $this->response($decodedToken);
             }
         } else {
-            $this->response(['Authentication failed'], REST_Controller::HTTP_OK);
+            $this->response(['Authentication failed'], 400);
         }
     }
 
@@ -190,16 +190,16 @@ class Product extends REST_Controller
 
                 $response > 0 ? $this->response([
                     'message' => 'Product berhasil dihapus.'
-                ], REST_Controller::HTTP_OK) : 
+                ], 200) : 
                 $this->response([
                     'message' =>'ID Product tidak ditemukan atau salah'
-                ], REST_Controller::HTTP_OK);
+                ], 201);
                 // ------------- End -------------
             } else {
                 $this->response($decodedToken);
             }
         } else {
-            $this->response(['Authentication failed'], REST_Controller::HTTP_OK);
+            $this->response(['Authentication failed'], 400);
         }
     }
 }
