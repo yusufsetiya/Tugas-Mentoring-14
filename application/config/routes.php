@@ -53,12 +53,35 @@ $route['default_controller'] = '';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-/* API */
-$route['product'] = 'api/Product';
-$route['product/(:any)'] = 'api/Product/$1';
-$route['product/(:num)']['PUT'] = 'api/Product/$1';
-$route['product/(:num)']['DELETE'] = 'api/Product/$1';
-$route['register'] = 'api/User/register';
-$route['login'] = 'api/User/login';
-$route['logout'] = 'api/User/logout';
-$route['reGenToken'] = 'api/Token/reGenToken';
+// /* API */
+// // $route['product'] = 'api/Product';
+// // $route['product/(:any)'] = 'api/Product/$1';
+// // $route['product/(:num)']['PUT'] = 'api/Product/$1';
+// // $route['product/(:num)']['DELETE'] = 'api/Product/$1';
+// $route['register'] = 'api/User/register';
+// $route['login'] = 'api/User/login';
+// $route['logout'] = 'api/User/logout';
+// $route['reGenToken'] = 'api/Token/reGenToken';
+
+// $route['api/products']                  = 'api/v1/Products/index';
+// $route['api/products/(:num)']           = 'api/v1/Products/detail/$1';
+// // $route['api/products']['POST']          = 'api/v1/Products/create';
+// // $route['api/products/(:num)']['PUT']   = 'api/v1/Products/update/$1';
+// // $route['api/products/(:num)']['DELETE']   = 'api/v1/Products/delete/$1';
+
+$route['api/v1'] = 'api/Welcome/index';
+
+$route['api/v1/auth/register'] = 'api/User/register';
+$route['api/v1/auth/login'] = 'api/User/login';
+$route['api/v1/auth/logout'] = 'api/User/logout';
+$route['api/v1/auth/reGenToken'] = 'api/Token/reGenToken';
+
+$route['api/v1/categories'] = 'api/Category';
+$route['api/v1/categories/(:any)'] = 'api/Category/$1';
+$route['api/v1/categories/(:num)']['PUT'] = 'api/Category/$1';
+$route['api/v1/categories/(:num)']['DELETE'] = 'api/Category/$1';
+
+$route['api/v1/products'] = 'api/Product';
+$route['api/v1/products/(:any)'] = 'api/Product/$1';
+$route['api/v1/products/(:num)']['PUT'] = 'api/Product/$1';
+$route['api/v1/products/(:num)']['DELETE'] = 'api/Product/$1';

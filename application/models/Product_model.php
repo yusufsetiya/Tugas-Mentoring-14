@@ -19,12 +19,33 @@ class Product_model extends CI_Model {
 	public function show($id = 0)
 	{
         if(!empty($id)){
-            $query = $this->db->get_where("products", ['id' => $id])->row_array();
+            $cek = $this->db->get_where("products", ['product_id' => $id])->num_rows();
+            if($cek > 0){
+                $data = $this->db->get_where("products", ['product_id' => $id])->row_array();
+                $query = [
+                    'status' => true,
+                    'data' => $data
+                ];
+            }else{
+                $query = [
+                    'status' => false,
+                ];
+            }
         }else{
-            $query = $this->db->get("products")->result();
+            $data1 = $this->db->get("products")->result();
+            $query = [
+                'status' => true,
+                'data' => $data1
+            ];
+
         }
         return $query;
 	}
+
+    public function validateCategory($id){
+        $return = $this->db->get_where("category", ['category_id' => $id])->num_rows();
+        return $return;
+    }
       
     /**
      * INSERT | POST method.
@@ -33,8 +54,22 @@ class Product_model extends CI_Model {
     */
     public function insert($data)
     {
-        $this->db->insert('products',$data);
-        return $this->db->insert_id(); 
+        $cek = $this->validateCategory($data['category_id']);
+        if($cek > 0){
+            $return = $this->db->insert('products',$data);
+            $id = $this->db->insert_id();
+            $return =[
+                'status' => true,
+                'message' => 'Sukses menambahkan data.',
+                'id' => $id
+            ];
+        }else{
+            $return=[
+                'status' => false,
+                'message' => 'ID Category tidak ditemukan atau salah.'
+            ];
+        }
+        return $return;
     } 
      
     /**
@@ -44,9 +79,37 @@ class Product_model extends CI_Model {
     */
     public function update($data, $id)
     {
-        $data = $this->db->update('products', $data, array('id'=>$id));
-        //echo $this->db->last_query();
-		return $this->db->affected_rows();
+        $cek = $this->db->get_where("products", ['product_id' => $id])->num_rows();
+        // var_dump($cek);die;
+        if($cek > 0){
+            $cek = $this->validateCategory($data['category_id']);
+            if($cek > 0){
+                $return = $this->db->update('products', $data, array('product_id'=>$id));
+                $validasi = $this->db->affected_rows();
+                if($validasi > 0){
+                    $return=[
+                        'status' => true,
+                        'message' => 'Sukses update data.'
+                    ];
+                }else{
+                    $return=[
+                        'status' => false,
+                        'message' => 'Data tidak terupdate.'
+                    ];
+                }
+            }else{
+                $return=[
+                    'status' => false,
+                    'message' => 'ID Category tidak ditemukan atau salah.'
+                ];
+            }
+        }else{
+            $return=[
+                'status' => false,
+                'message' => 'ID Product tidak ditemukan atau salah.'
+            ];
+        }
+        return $return;
     }
      
     /**
@@ -56,7 +119,7 @@ class Product_model extends CI_Model {
     */
     public function delete($id)
     {
-        $this->db->delete('products', array('id'=>$id));
+        $this->db->delete('products', array('product_id'=>$id));
         return $this->db->affected_rows();
     }
 }

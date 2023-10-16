@@ -20,7 +20,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Product extends REST_Controller
+class Category extends REST_Controller
 {
 
     /**
@@ -32,7 +32,7 @@ class Product extends REST_Controller
     {
         parent::__construct();
         $this->load->library('Authorization_Token');
-        $this->load->model('Product_model');
+        $this->load->model('Category_model');
     }
 
     /**
@@ -49,7 +49,7 @@ class Product extends REST_Controller
             if ($decodedToken['status']) {
                 // ------- Main Logic part -------
                 if (!empty($id)) {
-                    $data = $this->Product_model->show($id);
+                    $data = $this->Category_model->show($id);
                     if($data['status'] == false){
                         $this->response([
                             'message' => 'Data tidak ditemukan.',
@@ -61,7 +61,7 @@ class Product extends REST_Controller
                         ], REST_Controller::HTTP_OK);
                     }
                 } else {
-                    $data = $this->Product_model->show();
+                    $data = $this->Category_model->show();
                     if($data['status'] == false){
                         $this->response([
                             'message' => 'Data tidak ditemukan.',
@@ -100,24 +100,18 @@ class Product extends REST_Controller
                 // ------- Main Logic part -------
                 $input = $this->_post_args;
                 // var_dump($input);die();
-                if(!isset($input['product_name']) || !isset($input['category_id'])){
+                if(!isset($input['category_name'])){
                     $this->response([
                         'message' => 'Data tidak lengkap.',
                     ], REST_Controller::HTTP_OK);
                 }else{
-                    $product_id = $this->Product_model->insert($input);
-                    if($product_id['status'] == false){
-                        $this->response([
-                            'message' => $product_id['message'],
-                        ], REST_Controller::HTTP_OK);
-                    }else{
-                        $data = $this->Product_model->show($product_id['id']);
-        
-                        $this->response([
-                            'message' => 'Sukses menambah data.',
-                            'data' => $data
-                        ], REST_Controller::HTTP_OK);
-                    }
+                    $product_id = $this->Category_model->insert($input);
+                    $data = $this->Category_model->show($product_id);
+    
+                    $this->response([
+                        'message' => 'Sukses menambah data.',
+                        'data' => $data
+                    ], REST_Controller::HTTP_OK);
                 }
                 // ------------- End -------------
             } else {
@@ -147,21 +141,17 @@ class Product extends REST_Controller
 
                 // $headersz = $this->input->request_headers();
                 $input = $this->_put_args;
-                $data['product_name'] = $input['product_name'];
-                $data['category_id'] = $input['category_id'];
-                $data['price'] = $input['price'];
-                $data['quantity'] = $input['quantity'];
-                $data['description'] = $input['description'];
-                $response = $this->Product_model->update($data, $id);
-                if($response > 0 && $response['status'] == true){
-                    $data = $this->Product_model->show($id);
+                $data['category_name'] = $input['category_name'];
+                $response = $this->Category_model->update($data, $id);
+                if($response > 0){
+                    $data = $this->Category_model->show($id);
                     $this->response([
                         'message' => $response['message'],
                         'data' => $data
                     ], REST_Controller::HTTP_OK);
                 }else{
                     $this->response([
-                        'message' => $response['message'],
+                        'message' => 'Data tidak ter update.',
                     ], REST_Controller::HTTP_OK);
                 }
                 // ------------- End -------------
@@ -186,13 +176,13 @@ class Product extends REST_Controller
             $decodedToken = $this->authorization_token->validateToken($headers['Authorization']);
             if ($decodedToken['status']) {
                 // ------- Main Logic part -------
-                $response = $this->Product_model->delete($id);
+                $response = $this->Category_model->delete($id);
 
                 $response > 0 ? $this->response([
-                    'message' => 'Product berhasil dihapus.'
+                    'message' => 'Kategori berhasil dihapus.'
                 ], REST_Controller::HTTP_OK) : 
                 $this->response([
-                    'message' =>'ID Product tidak ditemukan atau salah'
+                    'message' =>'ID Kategori tidak ditemukan atau salah'
                 ], REST_Controller::HTTP_OK);
                 // ------------- End -------------
             } else {
