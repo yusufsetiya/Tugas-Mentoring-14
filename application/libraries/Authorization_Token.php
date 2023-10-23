@@ -102,7 +102,11 @@ class Authorization_Token
                  * Token Decode
                  */
                 try {
-                    $bearerToken = (explode(" ", $token_data['token']))[1];
+                    if (strpos($token_data['token'], 'Bearer') !== false) {
+                        $bearerToken = explode(" ", $token_data['token'])[1];
+                    } else {
+                        $bearerToken = $token_data['token'];
+                    }
                     $token_decode = JWT::decode($bearerToken, $this->token_key, array($this->token_algorithm));
                 }
                 catch(Exception $e) {
