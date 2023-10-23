@@ -1,4 +1,3 @@
 ## Tugas mentoring 15 dan 16
 
-JWT Rest API
-API Documentation
+JWT Rest API dan API Documentation
