@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'sql.freedb.tech',
-	'username' => 'freedb_yusufsetiya',
-	'password' => '59MWZnznRF8b#d?',
-	'database' => 'freedb_mentoring14',
+	'hostname' => 'tugas-16-mysql.rizalord.xyz',
+	'username' => 'root',
+	'password' => 'secretpassword321',
+	'database' => 'ucup_vs_epribade',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
